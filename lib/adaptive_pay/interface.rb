@@ -5,6 +5,12 @@ module AdaptivePay
 
     attr_accessor :base_url, :environment, :username, :password, :signature
 
+    # Initialize a new interface object, takes an optional rails_env parameter
+    # 
+    # The rails_env parameter decides which configuration to load can be:
+    #   nil -> use current Rails.env section in config/adaptive_pay.yml
+    #   false -> dont load config from config/adaptive_pay.yml
+    #   string/symbol -> use that section from config/adaptive_pay.yml
     def initialize(rails_env=nil)
       load(rails_env||Rails.env) unless rails_env == false
     end
@@ -21,6 +27,8 @@ module AdaptivePay
       end
     end
 
+    # Explicitly select a paypal environment to connect to
+    # environment parameter can be :production, :sandbox, :beta_sandbox
     def set_environment(environment)
       @environment = environment.to_sym
       @base_url = {
