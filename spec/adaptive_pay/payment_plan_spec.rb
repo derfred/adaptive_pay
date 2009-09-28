@@ -21,7 +21,7 @@ describe AdaptivePay::PaymentPlan do
 
   describe "attributes" do
 
-    %w{currency}.each do |attribute|
+    %w{currency reverse_all_parallel_payments_on_error cancel_url return_url ipn_url}.each do |attribute|
       it "should have #{attribute} attribute" do
         @payment_plan.send("#{attribute}=", "test")
         @payment_plan.send(attribute).should == "test"
