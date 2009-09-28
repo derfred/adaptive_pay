@@ -4,6 +4,9 @@ development:
   password: "my_password"
   signature: "my_signature"
 
+test:
+  retain_requests_for_test: true
+
 production:
   environment: "production"
   username: "my_production_username"
