@@ -1,0 +1,3 @@
+class Rails
+  
+end

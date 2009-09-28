@@ -1,0 +1,11 @@
+development:
+  environment: "sandbox"
+  username: "my_username"
+  password: "my_password"
+  signature: "my_signature"
+
+production:
+  environment: "production"
+  username: "my_production_username"
+  password: "my_production_password"
+  signature: "my_production_signature"
