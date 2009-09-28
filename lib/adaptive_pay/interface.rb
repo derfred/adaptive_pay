@@ -3,7 +3,11 @@ require "erb"
 module AdaptivePay
   class Interface
 
-    attr_accessor :base_url, :environment, :username, :password, :signature
+    def self.requests
+      @requests ||= []
+    end
+
+    attr_accessor :base_url, :environment, :username, :password, :signature, :retain_requests_for_test
 
     # Initialize a new interface object, takes an optional rails_env parameter
     # 
@@ -38,8 +42,8 @@ module AdaptivePay
       }[@environment]
     end
 
-    def queue_requests_for_test?
-      !!@queue_requests_for_test
+    def retain_requests_for_test?
+      !!@retain_requests_for_test
     end
 
   end
