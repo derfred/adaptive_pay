@@ -1,7 +1,16 @@
 module AdaptivePay
   class ApprovalRequest < AbstractPaymentRequest
 
-    attr_accessor :valid_from, :valid_until
+    attribute "dateOfMonth"
+    attribute "dayOfWeek"
+    attribute "endingDate"
+    attribute "startingDate"
+    attribute "maxAmountPerPayment"
+    attribute "maxNumberOfPayments"
+    attribute "maxNumberOfPaymentsPerPeriod"
+    attribute "maxTotalAmountOfAllPayments"
+    attribute "paymentPeriod"
+    attribute "pinType"
 
   end
 end

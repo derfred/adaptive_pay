@@ -1,7 +1,25 @@
 module AdaptivePay
   class AbstractPaymentRequest < Request
 
-    attr_accessor :currency, :reverse_all_parallel_payments_on_error, :cancel_url, :return_url, :ipn_url
+    attribute "requestEnvelope.detailLevel"
+    attribute "requestEnvelope.errorLanguage"
+
+    attribute "clientDetails.ipAddress"
+    attribute "clientDetails.applicationId"
+    attribute "clientDetails.customerId"
+    attribute "clientDetails.customerType"
+    attribute "clientDetails.deviceId"
+    attribute "clientDetails.geoLocation"
+    attribute "clientDetails.model"
+    attribute "clientDetails.partnerName"
+
+    attribute "currencyCode"
+    attribute "ipnNotificationUrl"
+    attribute "cancelUrl"
+    attribute "returnUrl"
+
+    attribute "memo"
+
     attr_reader :sender, :recipients
 
     def initialize(&block)
