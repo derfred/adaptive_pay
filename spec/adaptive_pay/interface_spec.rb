@@ -74,7 +74,7 @@ describe AdaptivePay::Interface, "methods" do
 
   describe "request_approval" do
 
-    it "should enqueue payment_plan if retain_requests_for_test is set" do
+    it "should enqueue request if retain_requests_for_test is set" do
       request = AdaptivePay::ApprovalRequest.new
       @interface.retain_requests_for_test = true
       @interface.request_approval request
@@ -86,7 +86,7 @@ describe AdaptivePay::Interface, "methods" do
 
   describe "execute_payment" do
 
-    it "should enqueue payment_plan if retain_requests_for_test is set" do
+    it "should enqueue request if retain_requests_for_test is set" do
       request = AdaptivePay::PaymentRequest.new
       @interface.retain_requests_for_test = true
       @interface.execute_payment request
@@ -98,7 +98,7 @@ describe AdaptivePay::Interface, "methods" do
 
   describe "refund_payment" do
 
-    it "should enqueue payment_plan if retain_requests_for_test is set" do
+    it "should enqueue request if retain_requests_for_test is set" do
       request = AdaptivePay::RefundRequest.new
       @interface.retain_requests_for_test = true
       @interface.refund request
