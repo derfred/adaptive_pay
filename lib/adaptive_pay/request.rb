@@ -47,6 +47,7 @@ module AdaptivePay
     def perform(interface)
       uri = construct_uri(interface)
       request = Net::HTTP::Post.new uri.request_uri
+      request.body = build_body
       request.initialize_http_header(headers(interface))
       http_response = build_http(uri).request request
       Response.new http_response
@@ -72,6 +73,14 @@ module AdaptivePay
           "X-PAYPAL-REQUEST-DATA-FORMAT" => "NV",
           "X-PAYPAL-RESPONSE-DATA-FORMAT" => "JSON"
         }
+      end
+
+      def build_body
+        result = []
+        @attributes.each do |k, v|
+          result << "#{k}=#{URI.escape(v)}"
+        end
+        result.join("&")
       end
 
   end
