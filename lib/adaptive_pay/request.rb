@@ -67,9 +67,9 @@ module AdaptivePay
 
       def headers(interface)
         {
-          "X-PAYPAL-SECURITY-USERID" => interface.username,
-          "X-PAYPAL-SECURITY-PASSWORD" => interface.password,
-          "X-PAYPAL-SECURITY-SIGNATURE" => interface.signature,
+          "X-PAYPAL-SECURITY-USERID" => interface.username.to_s,
+          "X-PAYPAL-SECURITY-PASSWORD" => interface.password.to_s,
+          "X-PAYPAL-SECURITY-SIGNATURE" => interface.signature.to_s,
           "X-PAYPAL-REQUEST-DATA-FORMAT" => "NV",
           "X-PAYPAL-RESPONSE-DATA-FORMAT" => "JSON"
         }
@@ -78,7 +78,7 @@ module AdaptivePay
       def build_body
         result = []
         @attributes.each do |k, v|
-          result << "#{k}=#{URI.escape(v)}"
+          result << "#{k}=#{URI.escape(v)}" unless v.blank?
         end
         result.join("&")
       end

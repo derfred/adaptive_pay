@@ -5,6 +5,7 @@ describe AdaptivePay::Interface do
   before :each do
     AdaptivePay::Interface.requests.clear
     @interface = AdaptivePay::Interface.new false
+    @interface.base_url = "https://paypal.yumshare.com/"
   end
 
   describe "initialize" do
@@ -68,12 +69,21 @@ describe AdaptivePay::Interface do
 
   describe "request_approval" do
 
+    before :each do
+      @interface.retain_requests_for_test = true
+    end
+
     it "should enqueue request if retain_requests_for_test is set" do
       request = AdaptivePay::ApprovalRequest.new
-      @interface.retain_requests_for_test = true
       @interface.request_approval request
       AdaptivePay::Interface.requests.size.should == 1
       AdaptivePay::Interface.requests.first.should == request
+    end
+
+    it "should allow providing pre canned responses" do
+      response = mock(:response)
+      AdaptivePay::Interface.test_response = response
+      @interface.request_approval(AdaptivePay::ApprovalRequest.new).should == response
     end
 
     it "should use passed block to build request" do
@@ -89,12 +99,21 @@ describe AdaptivePay::Interface do
 
   describe "execute_payment" do
 
+    before :each do
+      @interface.retain_requests_for_test = true
+    end
+
     it "should enqueue request if retain_requests_for_test is set" do
       request = AdaptivePay::PaymentRequest.new
-      @interface.retain_requests_for_test = true
       @interface.execute_payment request
       AdaptivePay::Interface.requests.size.should == 1
       AdaptivePay::Interface.requests.first.should == request
+    end
+
+    it "should allow providing pre canned responses" do
+      response = mock(:response)
+      AdaptivePay::Interface.test_response = response
+      @interface.execute_payment(AdaptivePay::PaymentRequest.new).should == response
     end
 
     it "should use passed block to build request" do
@@ -110,12 +129,21 @@ describe AdaptivePay::Interface do
 
   describe "refund_payment" do
 
+    before :each do
+      @interface.retain_requests_for_test = true
+    end
+
     it "should enqueue request if retain_requests_for_test is set" do
       request = AdaptivePay::RefundRequest.new
-      @interface.retain_requests_for_test = true
       @interface.refund_payment request
       AdaptivePay::Interface.requests.size.should == 1
       AdaptivePay::Interface.requests.first.should == request
+    end
+
+    it "should allow providing pre canned responses" do
+      response = mock(:response)
+      AdaptivePay::Interface.test_response = response
+      @interface.refund_payment(AdaptivePay::RefundRequest.new).should == response
     end
 
     it "should use passed block to build request" do
