@@ -1,12 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe AdaptivePay::Interface, "overview" do
-
-  
-
-end
-
-describe AdaptivePay::Interface, "methods" do
+describe AdaptivePay::Interface do
 
   before :each do
     AdaptivePay::Interface.requests.clear
