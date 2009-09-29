@@ -8,6 +8,11 @@ end
 
 describe AdaptivePay::Interface, "methods" do
 
+  before :each do
+    AdaptivePay::Interface.requests.clear
+    @interface = AdaptivePay::Interface.new false
+  end
+
   describe "initialize" do
 
     it "should load configuration from adaptive_pay.yml according to" do
@@ -19,7 +24,7 @@ describe AdaptivePay::Interface, "methods" do
       interface.username.should == "my_username"
       interface.password.should == "my_password"
       interface.signature.should == "my_signature"
-      interface.should_not be_queue_requests_for_test
+      interface.should_not be_retain_requests_for_test
     end
 
     it "should allow setting environment as a parameter" do
@@ -31,7 +36,7 @@ describe AdaptivePay::Interface, "methods" do
       interface.username.should == "my_production_username"
       interface.password.should == "my_production_password"
       interface.signature.should == "my_production_signature"
-      interface.should_not be_queue_requests_for_test
+      interface.should_not be_retain_requests_for_test
     end
 
     it "should allow preventing the configuration loading" do
@@ -46,10 +51,6 @@ describe AdaptivePay::Interface, "methods" do
   end
 
   describe "set_environment" do
-
-    before :each do
-      @interface = AdaptivePay::Interface.new false
-    end
 
     it "should set production environment" do
       @interface.set_environment :production
@@ -73,19 +74,37 @@ describe AdaptivePay::Interface, "methods" do
 
   describe "request_approval" do
 
-    
+    it "should enqueue payment_plan if retain_requests_for_test is set" do
+      request = AdaptivePay::ApprovalRequest.new
+      @interface.retain_requests_for_test = true
+      @interface.request_approval request
+      AdaptivePay::Interface.requests.size.should == 1
+      AdaptivePay::Interface.requests.first.should == request
+    end
 
   end
 
   describe "execute_payment" do
 
-    
+    it "should enqueue payment_plan if retain_requests_for_test is set" do
+      request = AdaptivePay::PaymentRequest.new
+      @interface.retain_requests_for_test = true
+      @interface.execute_payment request
+      AdaptivePay::Interface.requests.size.should == 1
+      AdaptivePay::Interface.requests.first.should == request
+    end
 
   end
 
   describe "refund_payment" do
 
-    
+    it "should enqueue payment_plan if retain_requests_for_test is set" do
+      request = AdaptivePay::RefundRequest.new
+      @interface.retain_requests_for_test = true
+      @interface.refund request
+      AdaptivePay::Interface.requests.size.should == 1
+      AdaptivePay::Interface.requests.first.should == request
+    end
 
   end
 

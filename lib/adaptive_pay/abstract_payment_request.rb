@@ -1,12 +1,12 @@
 module AdaptivePay
-  class PaymentPlan
+  class AbstractPaymentRequest < Request
 
-    attr_accessor :currency, :reverse_all_parallel_payments_on_error, :cancel_url, :return_url, :ipn_url, :valid_from, :valid_until
+    attr_accessor :currency, :reverse_all_parallel_payments_on_error, :cancel_url, :return_url, :ipn_url
     attr_reader :sender, :recipients
 
     def initialize(&block)
       @recipients = []
-      yield self if block_given?
+      super
     end
 
     def sender=(sender_options)
