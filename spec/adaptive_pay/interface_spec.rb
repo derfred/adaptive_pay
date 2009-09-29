@@ -82,6 +82,15 @@ describe AdaptivePay::Interface, "methods" do
       AdaptivePay::Interface.requests.first.should == request
     end
 
+    it "should use passed block to build request" do
+      called = false
+      @interface.request_approval do |p|
+        called = true
+        p.should be_a(AdaptivePay::ApprovalRequest)
+      end
+      called.should be_true
+    end
+
   end
 
   describe "execute_payment" do
@@ -94,6 +103,15 @@ describe AdaptivePay::Interface, "methods" do
       AdaptivePay::Interface.requests.first.should == request
     end
 
+    it "should use passed block to build request" do
+      called = false
+      @interface.execute_payment do |p|
+        called = true
+        p.should be_a(AdaptivePay::PaymentRequest)
+      end
+      called.should be_true
+    end
+
   end
 
   describe "refund_payment" do
@@ -101,9 +119,18 @@ describe AdaptivePay::Interface, "methods" do
     it "should enqueue request if retain_requests_for_test is set" do
       request = AdaptivePay::RefundRequest.new
       @interface.retain_requests_for_test = true
-      @interface.refund request
+      @interface.refund_payment request
       AdaptivePay::Interface.requests.size.should == 1
       AdaptivePay::Interface.requests.first.should == request
+    end
+
+    it "should use passed block to build request" do
+      called = false
+      @interface.refund_payment do |p|
+        called = true
+        p.should be_a(AdaptivePay::RefundRequest)
+      end
+      called.should be_true
     end
 
   end
