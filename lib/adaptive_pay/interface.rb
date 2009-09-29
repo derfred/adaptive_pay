@@ -8,8 +8,16 @@ module AdaptivePay
     end
 
     cattr_accessor :test_response
+    attr_accessor :test_response
 
     attr_accessor :base_url, :environment, :username, :password, :signature, :retain_requests_for_test
+
+    def self.test_interface(response = nil)
+      iface = new false
+      iface.retain_requests_for_test = true
+      iface.test_response = response
+      iface
+    end
 
     # Initialize a new interface object, takes an optional rails_env parameter
     # 
@@ -78,7 +86,7 @@ module AdaptivePay
       def perform(request)
         if retain_requests_for_test?
           self.class.requests << request
-          self.class.test_response
+          test_response || self.class.test_response
         else
           request.perform self
         end
