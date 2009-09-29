@@ -6,17 +6,6 @@ describe AdaptivePay::AbstractPaymentRequest do
     @payment_request = AdaptivePay::AbstractPaymentRequest.new
   end
 
-  describe "attributes" do
-
-    %w{currency reverse_all_parallel_payments_on_error cancel_url return_url ipn_url}.each do |attribute|
-      it "should have #{attribute} attribute" do
-        @payment_request.send("#{attribute}=", "test")
-        @payment_request.send(attribute).should == "test"
-      end
-    end
-
-  end
-
   describe "sender" do
 
     it "should save sender object" do
