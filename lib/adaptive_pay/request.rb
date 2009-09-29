@@ -4,6 +4,10 @@ require "net/https"
 module AdaptivePay
   class Request
 
+    def self.response_type
+      :other
+    end
+
     cattr_accessor :endpoint
 
     class_inheritable_accessor :attributes
@@ -50,7 +54,7 @@ module AdaptivePay
       request.body = build_body
       request.initialize_http_header(headers(interface))
       http_response = build_http(uri).request request
-      Response.new http_response
+      Response.new self.class.response_type, http_response
     end
 
     protected

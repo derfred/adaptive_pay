@@ -1,6 +1,10 @@
 module AdaptivePay
   class ApprovalRequest < AbstractPaymentRequest
 
+    def self.response_type
+      :approval
+    end
+
     attribute "dateOfMonth"
     attribute "dayOfWeek"
     attribute "endingDate"

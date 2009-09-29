@@ -122,7 +122,7 @@ describe AdaptivePay::Request do
 
       request = MyKlass8.new
       FakeWeb.register_uri(:post, "https://somewhere.at.paypal.cc/my_endpoint", :body => "{ actionType: 'PAY' }")
-      AdaptivePay::Response.should_receive(:new).with { |resp| resp.body.should == "{ actionType: 'PAY' }" }
+      AdaptivePay::Response.should_receive(:new).with { |type, resp| resp.body.should == "{ actionType: 'PAY' }" }
       request.perform mock_interface
     end
 

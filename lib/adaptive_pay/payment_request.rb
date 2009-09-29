@@ -1,6 +1,10 @@
 module AdaptivePay
   class PaymentRequest < AbstractPaymentRequest
 
+    def self.response_type
+      :payment
+    end
+
     attribute "actionType", :default => "PAY"
     attribute "preapprovalKey"
     attribute "pin"
