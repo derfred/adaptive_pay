@@ -1,6 +1,15 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'fakeweb'
 
 describe AdaptivePay::Request do
+
+  before :each do
+    FakeWeb.allow_net_connect = false
+  end
+
+  after :each do
+    FakeWeb.allow_net_connect = true
+  end
 
   describe "self.attribute" do
 
@@ -86,6 +95,35 @@ describe AdaptivePay::Request do
 
       obj = MyKlass6.new
       obj.my_attrib.should == "value"
+    end
+
+  end
+
+  describe "perform" do
+
+    def mock_interface(options={})
+      mock(:interface, {:base_url => "https://somewhere.at.paypal.cc", :username => "username", :password => "password", :signature => "signature"}.merge(options))
+    end
+
+    it "should send request to base_url + request specific endpoint" do
+      class MyKlass8 < AdaptivePay::Request
+        self.endpoint = "my_endpoint"
+      end
+
+      request = MyKlass8.new
+      FakeWeb.register_uri(:post, "https://somewhere.at.paypal.cc/my_endpoint", :body => "")
+      request.perform mock_interface
+    end
+
+    it "should build Response from http response" do
+      class MyKlass8 < AdaptivePay::Request
+        self.endpoint = "my_endpoint"
+      end
+
+      request = MyKlass8.new
+      FakeWeb.register_uri(:post, "https://somewhere.at.paypal.cc/my_endpoint", :body => "{ actionType: 'PAY' }")
+      AdaptivePay::Response.should_receive(:new).with { |resp| resp.body.should == "{ actionType: 'PAY' }" }
+      request.perform mock_interface
     end
 
   end
