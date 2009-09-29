@@ -30,7 +30,7 @@ module AdaptivePay
     def initialize(&block)
       @attributes = {}
       self.class.attributes.each do |k|
-        write_attribute k[:name], k[:default]
+        write_attribute k[:name], k[:default] if k[:default]
       end
       yield self if block_given?
     end
@@ -78,7 +78,7 @@ module AdaptivePay
       def build_body
         result = []
         @attributes.each do |k, v|
-          result << "#{k}=#{URI.escape(v)}" unless v.blank?
+          result << "#{k}=#{URI.escape(v)}"
         end
         result.join("&")
       end
