@@ -8,7 +8,7 @@ describe AdaptivePay::Recipient do
 
   describe "attributes" do
 
-    %w{account amount primary}.each do |attribute|
+    %w{email amount primary}.each do |attribute|
       it "should have #{attribute} attribute" do
         @recipient.send("#{attribute}=", "test")
         @recipient.send(attribute).should == "test"
