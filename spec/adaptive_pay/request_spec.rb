@@ -116,7 +116,7 @@ describe AdaptivePay::Request do
     end
 
     it "should build Response from http response" do
-      class MyKlass8 < AdaptivePay::Request
+      class MyKlass9 < AdaptivePay::Request
         self.endpoint = "my_endpoint"
       end
 
@@ -124,6 +124,26 @@ describe AdaptivePay::Request do
       FakeWeb.register_uri(:post, "https://somewhere.at.paypal.cc/my_endpoint", :body => "{ actionType: 'PAY' }")
       AdaptivePay::Response.should_receive(:new).with { |type, resp| resp.body.should == "{ actionType: 'PAY' }" }
       request.perform mock_interface
+    end
+
+  end
+
+  describe "serialize" do
+
+    it "should build query string for attributes" do
+      class MyKlass10 < AdaptivePay::Request
+        self.endpoint = "my_endpoint"
+        attribute "nesting.testing"
+        attribute "topLevel"
+      end
+
+      obj = MyKlass10.new
+      obj.testing = "1234"
+      obj.top_level = true
+      decompose(obj.serialize).should == {
+        "nesting.testing" => "1234",
+        "topLevel" => "true"
+      }
     end
 
   end

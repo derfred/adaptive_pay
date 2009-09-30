@@ -1,5 +1,6 @@
 require "net/http"
 require "net/https"
+require 'bigdecimal/util'
 
 module AdaptivePay
   class Request
@@ -51,10 +52,18 @@ module AdaptivePay
     def perform(interface)
       uri = construct_uri(interface)
       request = Net::HTTP::Post.new uri.request_uri
-      request.body = build_body
+      request.body = serialize
       request.initialize_http_header(headers(interface))
       http_response = build_http(uri).request request
       Response.new self.class.response_type, http_response
+    end
+
+    def serialize
+      result = []
+      all_attributes.each do |k, v|
+        result << "#{k}=#{URI.escape(v.to_s)}"
+      end
+      result.join("&")
     end
 
     protected
@@ -79,12 +88,17 @@ module AdaptivePay
         }
       end
 
-      def build_body
-        result = []
-        @attributes.each do |k, v|
-          result << "#{k}=#{URI.escape(v)}"
+      def all_attributes
+        result = {}
+        self.class.attribute_names.each do |name|
+          value = read_attribute(name)
+          result[name] = value unless value.nil?
         end
-        result.join("&")
+        result.merge(extra_attributes)
+      end
+
+      def extra_attributes
+        {}
       end
 
   end

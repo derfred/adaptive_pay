@@ -19,8 +19,9 @@ module AdaptivePay
     attribute "returnUrl"
 
     attribute "memo"
+    attribute "senderEmail"
 
-    attr_reader :sender, :recipients
+    attr_reader :sender
 
     def initialize(&block)
       @recipients = []
@@ -35,13 +36,14 @@ module AdaptivePay
       end
     end
 
-    def add_recipient(recipient_options)
-      if recipient_options.is_a?(AdaptivePay::Recipient)
-        @recipients << recipient_options
-      else
-        @recipients << AdaptivePay::Recipient.new(recipient_options)
+    protected
+      def extra_attributes
+        return super if sender.blank?
+        result = {}
+        result["clientDetails.ipAddress"] = sender.client_ip
+        result["senderEmail"] = sender.email unless sender.email.blank?
+        super.merge(result)
       end
-    end
 
   end
 end

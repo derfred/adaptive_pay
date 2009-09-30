@@ -8,7 +8,7 @@ describe AdaptivePay::Sender do
 
   describe "attributes" do
 
-    %w{account client_ip}.each do |attribute|
+    %w{email client_ip}.each do |attribute|
       it "should have #{attribute} attribute" do
         @sender.send("#{attribute}=", "test")
         @sender.send(attribute).should == "test"
