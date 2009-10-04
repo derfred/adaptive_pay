@@ -57,8 +57,8 @@ module AdaptivePay
     end
 
     # send a preapproved payment request to paypal
-    def request_approval(request=nil, &block)
-      request = request_or_from_yield request, ApprovalRequest, &block
+    def request_preapproval(request=nil, &block)
+      request = request_or_from_yield request, PreapprovalRequest, &block
       perform request
     end
 

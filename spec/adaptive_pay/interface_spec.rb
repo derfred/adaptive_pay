@@ -67,15 +67,15 @@ describe AdaptivePay::Interface do
 
   end
 
-  describe "request_approval" do
+  describe "request_preapproval" do
 
     before :each do
       @interface.retain_requests_for_test = true
     end
 
     it "should enqueue request if retain_requests_for_test is set" do
-      request = AdaptivePay::ApprovalRequest.new
-      @interface.request_approval request
+      request = AdaptivePay::PreapprovalRequest.new
+      @interface.request_preapproval request
       AdaptivePay::Interface.requests.size.should == 1
       AdaptivePay::Interface.requests.first.should == request
     end
@@ -83,14 +83,14 @@ describe AdaptivePay::Interface do
     it "should allow providing pre canned responses" do
       response = mock(:response)
       AdaptivePay::Interface.test_response = response
-      @interface.request_approval(AdaptivePay::ApprovalRequest.new).should == response
+      @interface.request_preapproval(AdaptivePay::PreapprovalRequest.new).should == response
     end
 
     it "should use passed block to build request" do
       called = false
-      @interface.request_approval do |p|
+      @interface.request_preapproval do |p|
         called = true
-        p.should be_a(AdaptivePay::ApprovalRequest)
+        p.should be_a(AdaptivePay::PreapprovalRequest)
       end
       called.should be_true
     end
