@@ -14,6 +14,7 @@ module AdaptivePay
     attribute "payKey"
     attribute "trackingId"
     attribute "transactionId"
+    attribute "ipnNotificationUrl"
 
     def initialize(&block)
       @recipients = []
