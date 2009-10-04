@@ -31,7 +31,8 @@ describe AdaptivePay::AbstractPaymentRequest do
       request.sender = { :client_ip => "11.22.33.44", :email => "sender@paypal.com" }
       decompose(request.serialize).should == {
         "clientDetails.ipAddress" => "11.22.33.44",
-        "senderEmail" => "sender@paypal.com"
+        "senderEmail" => "sender@paypal.com",
+        "requestEnvelope.errorLanguage" => "en_US"
       }
     end
 

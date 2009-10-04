@@ -2,7 +2,7 @@ module AdaptivePay
   class AbstractPaymentRequest < Request
 
     attribute "requestEnvelope.detailLevel"
-    attribute "requestEnvelope.errorLanguage"
+    attribute "requestEnvelope.errorLanguage", :default => "en_US"
 
     attribute "clientDetails.ipAddress"
     attribute "clientDetails.applicationId"
@@ -22,11 +22,6 @@ module AdaptivePay
     attribute "senderEmail"
 
     attr_reader :sender
-
-    def initialize(&block)
-      @recipients = []
-      super
-    end
 
     def sender=(sender_options)
       if sender_options.is_a?(AdaptivePay::Sender)

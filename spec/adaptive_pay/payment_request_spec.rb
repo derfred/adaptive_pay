@@ -19,7 +19,8 @@ describe AdaptivePay::PaymentRequest do
         "receiverList.receiver(1).email" => "primary@paypal.com",
         "receiverList.receiver(1).amount" => "10.00",
         "receiverList.receiver(1).primary" => "true",
-        "actionType" => "PAY"
+        "actionType" => "PAY",
+        "requestEnvelope.errorLanguage" => "en_US"
       }
     end
 

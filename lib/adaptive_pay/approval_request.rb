@@ -5,6 +5,8 @@ module AdaptivePay
       :approval
     end
 
+    self.endpoint = "Preapproval"
+
     attribute "dateOfMonth"
     attribute "dayOfWeek"
     attribute "endingDate"

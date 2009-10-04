@@ -5,6 +5,8 @@ module AdaptivePay
       :payment
     end
 
+    self.endpoint = "Pay"
+
     attr_reader :recipients
 
     attribute "actionType", :default => "PAY"
@@ -14,6 +16,11 @@ module AdaptivePay
     attribute "logDefaultShippingAddress"
     attribute "reverseAllParallelPaymentsOnError"
     attribute "trackingId"
+
+    def initialize(&block)
+      @recipients = []
+      super
+    end
 
     def add_recipient(recipient_options)
       if recipient_options.is_a?(AdaptivePay::Recipient)
