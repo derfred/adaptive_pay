@@ -68,7 +68,11 @@ module AdaptivePay
 
     protected
       def construct_uri(interface)
-        URI.parse("#{interface.base_url}/#{self.class.endpoint}".gsub("!://", "/"))
+        if interface.base_url.ends_with?("/")
+          URI.parse("#{interface.base_url}#{self.class.endpoint}")
+        else
+          URI.parse("#{interface.base_url}/#{self.class.endpoint}")
+        end
       end
 
       def build_http(uri)
@@ -84,7 +88,7 @@ module AdaptivePay
           "X-PAYPAL-SECURITY-PASSWORD" => interface.password.to_s,
           "X-PAYPAL-SECURITY-SIGNATURE" => interface.signature.to_s,
           "X-PAYPAL-REQUEST-DATA-FORMAT" => "NV",
-          "X-PAYPAL-RESPONSE-DATA-FORMAT" => "JSON"
+          "X-PAYPAL-RESPONSE-DATA-FORMAT" => "NV"
         }
       end
 
