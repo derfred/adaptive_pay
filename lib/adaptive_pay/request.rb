@@ -106,7 +106,7 @@ module AdaptivePay
         result = {}
         self.class.attribute_names.each do |name|
           value = read_attribute(name)
-          result[name] = value unless value.nil?
+          result[name] = format_attribute(name) unless value.nil?
         end
         result.merge(extra_attributes)
       end

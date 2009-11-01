@@ -11,8 +11,8 @@ module AdaptivePay
 
     attribute "dateOfMonth"
     attribute "dayOfWeek"
-    attribute "endingDate"
-    attribute "startingDate"
+    attribute "endingDate", :format => :date
+    attribute "startingDate", :format => :date
     attribute "maxAmountPerPayment"
     attribute "maxNumberOfPayments"
     attribute "maxNumberOfPaymentsPerPeriod"

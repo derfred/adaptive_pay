@@ -102,12 +102,14 @@ describe AdaptivePay::Request do
   describe "perform" do
 
     def mock_interface(options={})
-      mock(:interface, {:base_url => "https://somewhere.at.paypal.cc", :username => "username", :password => "password", :signature => "signature"}.merge(options))
+      mock(:interface, {:base_url => "https://somewhere.at.paypal.cc", :username => "username", :password => "password", :signature => "signature", :application_id => "application_id"}.merge(options))
     end
 
     it "should send request to base_url + request specific endpoint" do
       class MyKlass8 < AdaptivePay::Request
-        self.endpoint = "my_endpoint"
+        def self.endpoint
+          "my_endpoint"
+        end
       end
 
       request = MyKlass8.new
@@ -117,7 +119,9 @@ describe AdaptivePay::Request do
 
     it "should build Response from http response" do
       class MyKlass9 < AdaptivePay::Request
-        self.endpoint = "my_endpoint"
+        def self.endpoint
+          "my_endpoint"
+        end
       end
 
       request = MyKlass8.new
@@ -132,7 +136,6 @@ describe AdaptivePay::Request do
 
     it "should build query string for attributes" do
       class MyKlass10 < AdaptivePay::Request
-        self.endpoint = "my_endpoint"
         attribute "nesting.testing"
         attribute "topLevel"
       end
@@ -143,6 +146,18 @@ describe AdaptivePay::Request do
       decompose(obj.serialize).should == {
         "nesting.testing" => "1234",
         "topLevel" => "true"
+      }
+    end
+
+    it "should format date attributes" do
+      class MyKlass11 < AdaptivePay::Request
+        attribute "date", :format => :date
+      end
+
+      obj = MyKlass11.new
+      obj.date = Date.new(2009, 12, 12)
+      decompose(obj.serialize).should == {
+        "date" => "2009-12-12"
       }
     end
 
