@@ -10,7 +10,7 @@ module AdaptivePay
     cattr_accessor :test_response
     attr_accessor :test_response
 
-    attr_accessor :base_url, :environment, :username, :password, :signature, :retain_requests_for_test
+    attr_accessor :base_url, :environment, :username, :password, :signature, :application_id, :retain_requests_for_test
 
     def self.test_interface(response = nil)
       iface = new false

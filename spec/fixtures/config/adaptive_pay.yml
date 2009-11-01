@@ -3,6 +3,7 @@ development:
   username: "my_username"
   password: "my_password"
   signature: "my_signature"
+  application_id: "my_application_id"
 
 test:
   retain_requests_for_test: true
@@ -12,3 +13,4 @@ production:
   username: "my_production_username"
   password: "my_production_password"
   signature: "my_production_signature"
+  application_id: "my_production_application_id"

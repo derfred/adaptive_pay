@@ -19,6 +19,7 @@ describe AdaptivePay::Interface do
       interface.username.should == "my_username"
       interface.password.should == "my_password"
       interface.signature.should == "my_signature"
+      interface.application_id.should == "my_application_id"
       interface.should_not be_retain_requests_for_test
     end
 
