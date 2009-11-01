@@ -34,7 +34,7 @@ module AdaptivePay
 
     protected
       def parse(response)
-        unless response.code == "200"
+        unless response.code.to_s == "200"
           @success = false
           return
         end
