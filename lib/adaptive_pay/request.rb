@@ -97,6 +97,7 @@ module AdaptivePay
           "X-PAYPAL-SECURITY-USERID" => interface.username.to_s,
           "X-PAYPAL-SECURITY-PASSWORD" => interface.password.to_s,
           "X-PAYPAL-SECURITY-SIGNATURE" => interface.signature.to_s,
+          "X-PAYPAL-APPLICATION-ID" => interface.application_id.to_s,
           "X-PAYPAL-REQUEST-DATA-FORMAT" => "NV",
           "X-PAYPAL-RESPONSE-DATA-FORMAT" => "NV"
         }
