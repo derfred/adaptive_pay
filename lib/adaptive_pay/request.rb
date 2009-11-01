@@ -9,8 +9,6 @@ module AdaptivePay
       :other
     end
 
-    cattr_accessor :endpoint
-
     class_inheritable_accessor :attributes
     self.attributes = []
 
@@ -42,6 +40,18 @@ module AdaptivePay
 
     def read_attribute(name)
       @attributes[name]
+    end
+
+    def format_attribute(name)
+      attrib = self.class.attributes.find { |a| a[:name] == name }
+      case
+      when attrib.nil?
+        nil
+      when attrib[:format] == :date
+        @attributes[name].strftime("%Y-%m-%d")
+      else
+        @attributes[name]
+      end
     end
 
     def write_attribute(name, value)
