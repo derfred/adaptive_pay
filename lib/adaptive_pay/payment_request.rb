@@ -5,7 +5,9 @@ module AdaptivePay
       :payment
     end
 
-    self.endpoint = "Pay"
+    def self.endpoint
+      "Pay"
+    end
 
     attr_reader :recipients
 

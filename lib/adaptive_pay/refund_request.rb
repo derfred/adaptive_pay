@@ -5,7 +5,9 @@ module AdaptivePay
       :refund
     end
 
-    self.endpoint = "Refund"
+    def self.endpoint
+      "Refund"
+    end
 
     attr_reader :recipients
 
