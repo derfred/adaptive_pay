@@ -1,7 +1,7 @@
 Adaptive Pay
 ============
 
-A wrapper for the Paypal Adaptive Payments API. For details see: http://....
+A wrapper for the Paypal Adaptive Payments API. For details see: https://www.x.com/docs/DOC-1408
 
 The adaptive payments API allows you to:
 1) send money to multiple (up to 5) recipients in one transaction
