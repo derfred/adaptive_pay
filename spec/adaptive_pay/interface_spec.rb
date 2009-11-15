@@ -98,7 +98,7 @@ describe AdaptivePay::Interface do
 
   end
 
-  describe "execute_payment" do
+  describe "request_payment" do
 
     before :each do
       @interface.retain_requests_for_test = true
@@ -106,7 +106,7 @@ describe AdaptivePay::Interface do
 
     it "should enqueue request if retain_requests_for_test is set" do
       request = AdaptivePay::PaymentRequest.new
-      @interface.execute_payment request
+      @interface.request_payment request
       AdaptivePay::Interface.requests.size.should == 1
       AdaptivePay::Interface.requests.first.should == request
     end
@@ -114,12 +114,12 @@ describe AdaptivePay::Interface do
     it "should allow providing pre canned responses" do
       response = mock(:response)
       AdaptivePay::Interface.test_response = response
-      @interface.execute_payment(AdaptivePay::PaymentRequest.new).should == response
+      @interface.request_payment(AdaptivePay::PaymentRequest.new).should == response
     end
 
     it "should use passed block to build request" do
       called = false
-      @interface.execute_payment do |p|
+      @interface.request_payment do |p|
         called = true
         p.should be_a(AdaptivePay::PaymentRequest)
       end
@@ -128,7 +128,7 @@ describe AdaptivePay::Interface do
 
   end
 
-  describe "refund_payment" do
+  describe "request_refund" do
 
     before :each do
       @interface.retain_requests_for_test = true
@@ -136,7 +136,7 @@ describe AdaptivePay::Interface do
 
     it "should enqueue request if retain_requests_for_test is set" do
       request = AdaptivePay::RefundRequest.new
-      @interface.refund_payment request
+      @interface.request_refund request
       AdaptivePay::Interface.requests.size.should == 1
       AdaptivePay::Interface.requests.first.should == request
     end
@@ -144,12 +144,12 @@ describe AdaptivePay::Interface do
     it "should allow providing pre canned responses" do
       response = mock(:response)
       AdaptivePay::Interface.test_response = response
-      @interface.refund_payment(AdaptivePay::RefundRequest.new).should == response
+      @interface.request_refund(AdaptivePay::RefundRequest.new).should == response
     end
 
     it "should use passed block to build request" do
       called = false
-      @interface.refund_payment do |p|
+      @interface.request_refund do |p|
         called = true
         p.should be_a(AdaptivePay::RefundRequest)
       end

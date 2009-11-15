@@ -62,12 +62,12 @@ module AdaptivePay
       perform request
     end
 
-    def execute_payment(request=nil, &block)
+    def request_payment(request=nil, &block)
       request = request_or_from_yield request, PaymentRequest, &block
       perform request
     end
 
-    def refund_payment(request=nil, &block)
+    def request_refund(request=nil, &block)
       request = request_or_from_yield request, RefundRequest, &block
       perform request
     end
