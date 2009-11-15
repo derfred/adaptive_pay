@@ -8,3 +8,4 @@ require File.expand_path(File.dirname(__FILE__) + '/adaptive_pay/cancel_preappro
 require File.expand_path(File.dirname(__FILE__) + '/adaptive_pay/response')
 require File.expand_path(File.dirname(__FILE__) + '/adaptive_pay/sender')
 require File.expand_path(File.dirname(__FILE__) + '/adaptive_pay/recipient')
+require File.expand_path(File.dirname(__FILE__) + '/adaptive_pay/callback')

@@ -85,7 +85,7 @@ After the payment has been set up and the user has been redirected to the paymen
 
 def ipn_callback
   callback = AdaptivePay::Callback.new params
-  if callback.success?
+  if callback.completed?
     # payment has been processed, now mark order as paid etc
   else
     # payment failed
