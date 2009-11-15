@@ -11,6 +11,24 @@ module AdaptivePay
       !!@success
     end
 
+    def failure?
+      !@success
+    end
+
+
+    def created?
+      payment_exec_status == "CREATED"
+    end
+
+    def pending?
+      payment_exec_status == "PENDING"
+    end
+
+    def completed?
+      payment_exec_status == "COMPLETED"
+    end
+
+
     def payment_page_url
       case @type
       when :approval
