@@ -102,7 +102,7 @@ describe AdaptivePay::Request do
   describe "perform" do
 
     def mock_interface(options={})
-      mock(:interface, {:base_url => "https://somewhere.at.paypal.cc", :username => "username", :password => "password", :signature => "signature", :application_id => "application_id"}.merge(options))
+      mock(:interface, {:base_url => "https://somewhere.at.paypal.cc", :base_page_url => "https://deep.down_on.paypal.cc", :username => "username", :password => "password", :signature => "signature", :application_id => "application_id"}.merge(options))
     end
 
     it "should send request to base_url + request specific endpoint" do
@@ -126,7 +126,7 @@ describe AdaptivePay::Request do
 
       request = MyKlass8.new
       FakeWeb.register_uri(:post, "https://somewhere.at.paypal.cc/my_endpoint", :body => "{ actionType: 'PAY' }")
-      AdaptivePay::Response.should_receive(:new).with { |type, resp| resp.body.should == "{ actionType: 'PAY' }" }
+      AdaptivePay::Response.should_receive(:new).with { |interface, type, resp| resp.body.should == "{ actionType: 'PAY' }" }
       request.perform mock_interface
     end
 

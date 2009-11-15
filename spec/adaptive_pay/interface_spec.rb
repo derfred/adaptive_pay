@@ -52,18 +52,21 @@ describe AdaptivePay::Interface do
       @interface.set_environment :production
       @interface.environment.should == :production
       @interface.base_url.should == "https://svcs.paypal.com/AdaptivePayments/"
+      @interface.base_page_url.should == "https://www.paypal.com"
     end
 
     it "should set sandbox environment" do
       @interface.set_environment :sandbox
       @interface.environment.should == :sandbox
       @interface.base_url.should == "https://svcs.sandbox.paypal.com/AdaptivePayments/"
+      @interface.base_page_url.should == "https://www.sandbox.paypal.com"
     end
 
     it "should set beta_sandbox environment" do
       @interface.set_environment :beta_sandbox
       @interface.environment.should == :beta_sandbox
       @interface.base_url.should == "https://svcs.beta-sandbox.paypal.com/AdaptivePayments/"
+      @interface.base_page_url.should == "https://www.beta-sandbox.paypal.com"
     end
 
   end

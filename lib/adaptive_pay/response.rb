@@ -1,8 +1,9 @@
 module AdaptivePay
   class Response
 
-    def initialize(type, response)
+    def initialize(interface, type, response)
       @type = type
+      @base_page_url = interface.base_page_url
       @attributes = {}
       parse response
     end
@@ -32,9 +33,9 @@ module AdaptivePay
     def payment_page_url
       case @type
       when :approval
-        "https://www.paypal.com/webscr?cmd=_ap-preapproval&preapprovalkey=#{URI.escape(preapproval_key)}"
+        "#{@base_page_url}/webscr?cmd=_ap-preapproval&preapprovalkey=#{URI.escape(preapproval_key)}"
       when :payment
-        "https://www.paypal.com/webscr?cmd=_ap-payment&paykey=#{URI.escape(pay_key)}"
+        "#{@base_page_url}/webscr?cmd=_ap-payment&paykey=#{URI.escape(pay_key)}"
       end
     end
 

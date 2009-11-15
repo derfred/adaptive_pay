@@ -65,7 +65,7 @@ module AdaptivePay
       request.body = serialize
       request.initialize_http_header(headers(interface))
       http_response = build_http(uri).request request
-      Response.new self.class.response_type, http_response
+      Response.new interface, self.class.response_type, http_response
     end
 
     def serialize

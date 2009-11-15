@@ -10,7 +10,7 @@ module AdaptivePay
     cattr_accessor :test_response
     attr_accessor :test_response
 
-    attr_accessor :base_url, :environment, :username, :password, :signature, :application_id, :retain_requests_for_test
+    attr_accessor :base_url, :base_page_url, :environment, :username, :password, :signature, :application_id, :retain_requests_for_test
 
     def self.test_interface(response = nil)
       iface = new false
@@ -49,6 +49,11 @@ module AdaptivePay
         :production => "https://svcs.paypal.com/AdaptivePayments/",
         :sandbox => "https://svcs.sandbox.paypal.com/AdaptivePayments/",
         :beta_sandbox => "https://svcs.beta-sandbox.paypal.com/AdaptivePayments/"
+      }[@environment]
+      @base_page_url = {
+        :production => "https://www.paypal.com",
+        :sandbox => "https://www.sandbox.paypal.com",
+        :beta_sandbox => "https://www.beta-sandbox.paypal.com"
       }[@environment]
     end
 
