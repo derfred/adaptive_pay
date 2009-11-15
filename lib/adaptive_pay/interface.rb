@@ -57,19 +57,28 @@ module AdaptivePay
     end
 
     # send a preapproved payment request to paypal
-    def request_preapproval(request=nil, &block)
-      request = request_or_from_yield request, PreapprovalRequest, &block
+    def request_preapproval(&block)
+      request = yield PreapprovalRequest.new
       perform request
     end
 
-    def request_payment(request=nil, &block)
-      request = request_or_from_yield request, PaymentRequest, &block
+    def request_payment(&block)
+      request = yield PaymentRequest.new
       perform request
     end
 
-    def request_refund(request=nil, &block)
-      request = request_or_from_yield request, RefundRequest, &block
+    def request_refund(&block)
+      request = yield RefundRequest.new
       perform request
+    end
+
+    def perform(request)
+      if retain_requests_for_test?
+        self.class.requests << request
+        test_response || self.class.test_response
+      else
+        request.perform self
+      end
     end
 
     private
@@ -80,15 +89,6 @@ module AdaptivePay
           request = klass.new
           yield request
           request
-        end
-      end
-
-      def perform(request)
-        if retain_requests_for_test?
-          self.class.requests << request
-          test_response || self.class.test_response
-        else
-          request.perform self
         end
       end
 
