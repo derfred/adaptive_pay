@@ -124,7 +124,7 @@ interface = AdaptivePay::Interface.new
 response = interface.request_payment do |request|
   request.currency_code = "USD"
 
-  request.ipn_notification_url = "http://example.com/ipn_callback"      
+  request.ipn_notification_url = "http://example.com/ipn_callback"
 
   request.preapproval_key = approval.key    # this is the preapproval key generated in the first step
   request.add_recipient :email => "recipient1@email.com", :amount => 100
@@ -149,7 +149,7 @@ Rather than using the block based calls shown above you can explicitly create a 
 
 payment_request = AdaptivePay::PaymentRequest.new
 payment_request.currency_code = "USD"
-payment_request.ipn_notification_url = "http://example.com/ipn_callback"      
+payment_request.ipn_notification_url = "http://example.com/ipn_callback"
 payment_request.add_recipient :email => "recipient1@email.com", :amount => 100
 
 interface = AdaptivePay::Interface.new
@@ -161,7 +161,7 @@ This is equivalent to:
 interface = AdaptivePay::Interface.new
 response = interface.request_payment do |request|
   request.currency_code = "USD"
-  request.ipn_notification_url = "http://example.com/ipn_callback"      
+  request.ipn_notification_url = "http://example.com/ipn_callback"
   request.add_recipient :email => "recipient1@email.com", :amount => 100
 end
 
