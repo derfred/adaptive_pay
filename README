@@ -134,7 +134,7 @@ end
 
 if response.pending?
   # some payment methods require longer to process, in that case the API will return pending and notify using IPN callback
-elsif response.success?
+elsif response.completed?
   # payment has been processed, mark the order as paid etc
 else
   # there was an error, see the errors array for details
