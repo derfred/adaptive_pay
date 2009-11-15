@@ -2,6 +2,22 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 
+# Rakefile
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name = "adaptive_pay"
+    gemspec.summary = "Wrapper around the Paypal Adaptive Payments API"
+    gemspec.description = "Wrapper around the Paypal Adaptive Payments API"
+    gemspec.email = "ich@derfred.com"
+    gemspec.homepage = "http://github.com/derfred/adaptive_pay"
+    gemspec.authors = ["Frederik Fix"]
+  end
+  Jeweler::GemcutterTasks.new
+rescue LoadError
+  puts "Jeweler not available. Install it with: sudo gem install jeweler -s http://gemcutter.org"
+end
+
 desc 'Default: run unit tests.'
 task :default => :test
 
