@@ -32,7 +32,7 @@ module AdaptivePay
 
     def payment_page_url
       case @type
-      when :approval
+      when :preapproval
         "#{@base_page_url}/webscr?cmd=_ap-preapproval&preapprovalkey=#{URI.escape(preapproval_key)}"
       when :payment
         "#{@base_page_url}/webscr?cmd=_ap-payment&paykey=#{URI.escape(pay_key)}"

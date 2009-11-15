@@ -2,7 +2,7 @@ module AdaptivePay
   class PreapprovalRequest < AbstractPaymentRequest
 
     def self.response_type
-      :approval
+      :preapproval
     end
 
     def self.endpoint

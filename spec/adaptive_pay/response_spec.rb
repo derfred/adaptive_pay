@@ -39,7 +39,7 @@ describe AdaptivePay::Response do
 
     it "should build a payment_page_url for approval" do
       body = "responseEnvelope.ack=Success&preapprovalKey=PA-3TY011106S4428730"
-      response = AdaptivePay::Response.new @iface, :approval, mock(:response, :body => body, :code => "200")
+      response = AdaptivePay::Response.new @iface, :preapproval, mock(:response, :body => body, :code => "200")
       response.payment_page_url.should == "https://www.paypal.com/webscr?cmd=_ap-preapproval&preapprovalkey=PA-3TY011106S4428730"
     end
 
