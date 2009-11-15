@@ -81,16 +81,5 @@ module AdaptivePay
       end
     end
 
-    private
-      def request_or_from_yield(request, klass, &block)
-        if request
-          request
-        else
-          request = klass.new
-          yield request
-          request
-        end
-      end
-
   end
 end
