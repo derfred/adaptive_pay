@@ -1,0 +1,19 @@
+development:
+  environment: "sandbox"
+  username: "my_development_username"
+  password: "my_development_password"
+  signature: "my_development_signature"
+  application_id: "APP-80W284485P519543T"
+
+test:
+  retain_requests_for_test: true
+
+cucumber:
+  retain_requests_for_test: true
+
+production:
+  environment: "production"
+  username: "my_production_username"
+  password: "my_production_password"
+  signature: "my_production_signature"
+  application_id: "APP-80W284485P519543T"
