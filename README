@@ -11,7 +11,7 @@ The adaptive payments API allows you to:
 Installation
 -----------
 As plugin:
-script/plugin install git://git@github.com/derfred/adaptive_pay
+script/plugin install git://github.com/derfred/adaptive_pay.git
 
 As gem:
 (in config/environment.rb)
