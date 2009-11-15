@@ -1,3 +1,186 @@
-AdaptivePay, interface to Paypal Adaptive payments APIs
-=======================================================
+Adaptive Pay
+==========
 
+A wrapper for the Paypal Adaptive Payments API. For details see: http://....
+
+The adaptive payments API allows you to:
+1) send money to multiple (up to 5) recipients in one transaction
+2) preapprove payments, which can then be executed later without user intervention
+
+
+Installation
+-----------
+As plugin:
+script/plugin install git://git@github.com/derfred/adaptive_pay
+
+As gem:
+(in config/environment.rb)
+config.gem "derfred-adaptive_pay"
+Then run:
+rake gems:install
+
+
+Configuration
+-------------
+
+This plugin expects a file named config/adaptive_pay.yml to contain the configuration
+
+development:
+  instance: "sandbox"
+  username: "my_development_username"
+  password: "my_development_password"
+  signature: "my_development_signature"
+  application_id: "my_development_app_id"
+
+test:
+  retain_requests_for_test: true
+
+production:
+  instance: "production"
+  username: "my_production_username"
+  password: "my_production_password"
+  signature: "my_production_signature"
+  application_id: "my_production_app_id"
+
+Description of config parameters:
+  instance: can be either sandbox or production and refers to which instance of the Paypal service should be used
+  username, password, signature, application_id: the relevant authentication parameters for your account
+  retain_requests_for_test: mark this Rails environment as a test environment. If this parameter is set then all interactions with the API will remain local. For details see the testing section.
+  
+
+Chained/Split Payment Usage
+-------------------------------------
+
+The following example shows how to set up a chained payment for a total of 110 GBP, 10 GBP going to a primary receipient with the paypal account "agent@email.com" and 100 GBP going to the account "supplier@email.com". Because this is a chained payment it will seem to the user that the complete total will go to the primary account.
+
+interface = AdaptivePay::Interface.new
+response = interface.request_payment do |request|
+  request.currency_code = "GBP"
+
+  request.cancel_url = "http://example.com/cancelled_payment"        # this is where the user will be redirected should he cancel the payment
+  request.return_url = "http://example.com/completed_payment"       # and here should the payment be succesful
+  request.ipn_notification_url = "http://example.com/ipn_callback"      
+
+  request.add_recipient :email => "supplier@email.com",
+                        :amount => 100,
+                        :primary => false
+
+  request.add_recipient :email => "agent@email.com",
+                        :amount => 10,
+                        :primary => true
+end
+
+if response.created?
+  # the payment has been setup successfully, now the user will need to be redirected to the Paypal site:
+  redirect_to response.payment_page_url
+else
+  # the payment could not be setup, most likely because of a missing parameter or validation error
+  # the array of errors reported by the service can be retrieved using:
+  response.errors
+end
+
+This example could be changed to a Split Payment by setting the primary parameter to false for each recipient.
+
+After the payment has been set up and the user has been redirected to the payment page url, the application will need to wait for the IPN callback which indicates whether the payment has actually gone through. This is done in the next snippet. For this to work the ipn_callback_url specified above needs to be connected to a controller action.
+
+def ipn_callback
+  callback = AdaptivePay::Callback.new params
+  if callback.success?
+    # payment has been processed, now mark order as paid etc
+  else
+    # payment failed
+  end
+end
+
+
+
+Preapproved Payment Usage
+---------------------------
+
+The next example will ask the user to preapprove a payment of 300 dollars and then distribute it equally among three recipients at a later date
+
+interface = AdaptivePay::Interface.new
+response = interface.request_preapproval do |request|
+  request.currency_code = "USD"
+
+  request.max_total_amount_of_all_payments = 300
+  request.ending_date = 3.months.from_now
+  request.starting_date = Time.now
+end
+
+if response.created?
+  # The preapproval has been set up. In addition to redirecting the user to the payment page we will have to keep track of the
+  # preapproval key for making the payment at a later time:
+  Approval.create :key => response.preapproval_key
+  redirect_to response.payment_page_url
+else
+  # error in request, same as above
+end
+
+Now at a later time the payment can be initiated without user intervention, in a cron job or rake task etc:
+
+approval = Approval.first :conditions => ....   # find the approval object created above
+interface = AdaptivePay::Interface.new
+response = interface.request_payment do |request|
+  request.currency_code = "USD"
+
+  request.ipn_notification_url = "http://example.com/ipn_callback"      
+
+  request.preapproval_key = approval.key    # this is the preapproval key generated in the first step
+  request.add_recipient :email => "recipient1@email.com", :amount => 100
+  request.add_recipient :email => "recipient2@email.com", :amount => 100
+  request.add_recipient :email => "recipient3@email.com", :amount => 100
+end
+
+if response.pending?
+  # some payment methods require longer to process, in that case the API will return pending and notify using IPN callback
+elsif response.success?
+  # payment has been processed, mark the order as paid etc
+else
+  # there was an error, see the errors array for details
+  response.errors
+end
+
+
+Object based calls
+-----------------
+
+Rather than using the block based calls shown above you can explicitly create a Request object and pass it to the perform method:
+
+payment_request = AdaptivePay::PaymentRequest.new
+payment_request.currency_code = "USD"
+payment_request.ipn_notification_url = "http://example.com/ipn_callback"      
+payment_request.add_recipient :email => "recipient1@email.com", :amount => 100
+
+interface = AdaptivePay::Interface.new
+interface.perform  payment_request
+
+
+This is equivalent to:
+
+interface = AdaptivePay::Interface.new
+response = interface.request_payment do |request|
+  request.currency_code = "USD"
+  request.ipn_notification_url = "http://example.com/ipn_callback"      
+  request.add_recipient :email => "recipient1@email.com", :amount => 100
+end
+
+Since the Request objects are stateless you can reuse them.
+
+
+Testing
+---------
+
+The main benefit to using this library is the support for testing. When a RAILS_ENV has the retain_requests_for_test parameter set in the config/adaptive_pay.yml file requests will not be delivered to the Paypal servers but rather added to a queue, just like ActionMailer does. One difference though is that you need to provide a stub response.
+
+it "should create preapproval request" do
+  AdaptivePay::Interface.test_response = stub(:response, :success? => true, :pending? => false)
+  @payment_processor.process @order
+
+  AdaptivePay::Interface.requests.size.should == 1
+  request = AdaptivePay::Interface.requests.first
+
+  request.should be_a(AdaptivePay::PreapprovalRequest)
+  request.max_total_amount_of_all_payments.should == 130
+  request.currency_code.should == "GBP"
+end
