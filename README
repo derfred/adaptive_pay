@@ -15,7 +15,7 @@ script/plugin install git://github.com/derfred/adaptive_pay.git
 
 As gem:
 (in config/environment.rb)
-config.gem "derfred-adaptive_pay"
+config.gem "adaptive_pay"
 Then run:
 rake gems:install
 
