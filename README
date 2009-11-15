@@ -174,7 +174,7 @@ Testing
 The main benefit to using this library is the support for testing. When a RAILS_ENV has the retain_requests_for_test parameter set in the config/adaptive_pay.yml file requests will not be delivered to the Paypal servers but rather added to a queue, just like ActionMailer does. One difference though is that you need to provide a stub response.
 
 it "should create preapproval request" do
-  AdaptivePay::Interface.test_response = stub(:response, :success? => true, :pending? => false)
+  AdaptivePay::Interface.test_response = stub(:response, :completed? => true, :pending? => false)
   @payment_processor.process @order
 
   AdaptivePay::Interface.requests.size.should == 1
