@@ -63,17 +63,20 @@ module AdaptivePay
 
     # send a preapproved payment request to paypal
     def request_preapproval(&block)
-      request = yield PreapprovalRequest.new
+      request = PreapprovalRequest.new
+      yield request
       perform request
     end
 
     def request_payment(&block)
-      request = yield PaymentRequest.new
+      request = PaymentRequest.new
+      yield request
       perform request
     end
 
     def request_refund(&block)
-      request = yield RefundRequest.new
+      request = RefundRequest.new
+      yield request
       perform request
     end
 
