@@ -5,21 +5,23 @@
 
 Gem::Specification.new do |s|
   s.name = %q{adaptive_pay}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Frederik Fix"]
-  s.date = %q{2009-11-15}
+  s.date = %q{2009-11-23}
   s.description = %q{Wrapper around the Paypal Adaptive Payments API}
   s.email = %q{ich@derfred.com}
   s.extra_rdoc_files = [
     "README"
   ]
   s.files = [
-    "MIT-LICENSE",
+    ".gitignore",
+     "MIT-LICENSE",
      "README",
      "Rakefile",
      "VERSION",
+     "adaptive_pay.gemspec",
      "config/adaptive_pay.yml",
      "init.rb",
      "install.rb",
